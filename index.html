@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Game</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f0f4ff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: white;
+        width: 400px;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0px 0px 12px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    h2 {
+        margin-bottom: 15px;
+    }
+
+    .option {
+        background: #eef3ff;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .option:hover {
+        background: #dce5ff;
+    }
+
+    #nextBtn {
+        margin-top: 15px;
+        padding: 10px 20px;
+        border: none;
+        background: #4a67ff;
+        color: white;
+        font-size: 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: none;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2 id="question">Loading...</h2>
+    <div id="options"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Next</button>
+</div>
+
+<script>
+const quizData = [
+    {
+        question: "Which language is known as the father of programming?",
+        options: ["C", "Python", "Fortran", "Java"],
+        answer: "Fortran"
+    },
+    {
+        question: "Capital of India?",
+        options: ["Mumbai", "New Delhi", "Kolkata", "Chennai"],
+        answer: "New Delhi"
+    },
+    {
+        question: "Which one is a web browser?",
+        options: ["Chrome", "Windows", "Linux", "C++"],
+        answer: "Chrome"
+    },
+    {
+        question: "Immutable data type in Python?",
+        options: ["List", "Dictionary", "Tuple", "Set"],
+        answer: "Tuple"
+    }
+];
+
+let index = 0;
+let score = 0;
+
+function loadQuestion() {
+    document.getElementById("nextBtn").style.display = "none";
+    const q = quizData[index];
+    document.getElementById("question").innerText = q.question;
+
+    let optionsHtml = "";
+    q.options.forEach(opt => {
+        optionsHtml += `<div class='option' onclick='checkAnswer("${opt}")'>${opt}</div>`;
+    });
+    document.getElementById("options").innerHTML = optionsHtml;
+}
+
+function checkAnswer(selected) {
+    const q = quizData[index];
+
+    if (selected === q.answer) {
+        score++;
+        alert("Correct!");
+    } else {
+        alert("Wrong! Correct answer: " + q.answer);
+    }
+
+    document.getElementById("nextBtn").style.display = "block";
+}
+
+function nextQuestion() {
+    index++;
+
+    if (index < quizData.length) {
+        loadQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.querySelector(".container").innerHTML = `
+        <h2>Quiz Completed!</h2>
+        <h3>Your Score: ${score} / ${quizData.length}</h3>
+        <button onclick="location.reload()">Play Again</button>
+    `;
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>

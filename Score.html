@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f3f3;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+        }
+        .option {
+            padding: 10px;
+            margin-top: 10px;
+            background: #eee;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .option:hover {
+            background: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Simple Quiz</h2>
+
+    <div id="quiz-box">
+        <!-- Question will appear here -->
+    </div>
+
+    <button onclick="nextQuestion()">Next</button>
+</div>
+
+<script>
+    const quiz = [
+        {
+            question: "Q1. Who is the father of Computer?",
+            options: ["Charles Babbage", "Dennis Ritchie", "James Gosling", "Guido Rossum"],
+            answer: 0
+        },
+        {
+            question: "Q2. Capital of India?",
+            options: ["Mumbai", "Kolkata", "New Delhi", "Chennai"],
+            answer: 2
+        },
+        {
+            question: "Q3. HTML stands for?",
+            options: ["Hyper Trainer Marking Language", "Hyper Text Markup Language", "High Transfer Markup Level", "Hyper Text Managing Level"],
+            answer: 1
+        }
+    ];
+
+    let index = 0;
+    let score = 0;
+    let selected = -1;
+
+    function loadQuestion() {
+        const q = quiz[index];
+        let html = `<p class='question'>${q.question}</p>`;
+
+        q.options.forEach((opt, i) => {
+            html += `<div class='option' onclick='selectOption(${i})'>${opt}</div>`;
+        });
+
+        document.getElementById("quiz-box").innerHTML = html;
+    }
+
+    function selectOption(i) {
+        selected = i;
+    }
+
+    function nextQuestion() {
+        if (selected === quiz[index].answer) {
+            score++;
+        }
+
+        selected = -1; 
+        index++;
+
+        if (index >= quiz.length) {
+            showScore();
+        } else {
+            loadQuestion();
+        }
+    }
+
+    function showScore() {
+        document.getElementById("quiz-box").innerHTML =
+            `<h2>Your Score: ${score} / ${quiz.length}</h2>`;
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
